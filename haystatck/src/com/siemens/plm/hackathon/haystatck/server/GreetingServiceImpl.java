@@ -161,6 +161,7 @@ public class GreetingServiceImpl extends RemoteServiceServlet implements Greetin
 	    		sortedBaselines.add(baselines.getString(1));
 	        }
 	    	
+	    	
 			if(product.equals("NX")) {
 	    	Collections.sort(sortedBaselines, new Comparator<String>()	{
 				@Override
