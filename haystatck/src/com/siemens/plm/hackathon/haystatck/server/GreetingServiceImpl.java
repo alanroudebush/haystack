@@ -145,13 +145,15 @@ public class GreetingServiceImpl extends RemoteServiceServlet implements Greetin
 		}
 
 		try {
+			String query;
 			if(product.equals("TC")) {
 				dms = DriverManager.getConnection(rb.getString(Constants.TC_DMS_URL), rb.getString(Constants.TC_DMS_USER), TC_DMS_PW);
+		    	query = "SELECT name FROM baseline WHERE hidden='0' AND name LIKE '" + baselinePrefix + ".20%' AND IDEnvironment IN (SELECT IDenvironment FROM environment WHERE envtype='release' AND idproduct IN (SELECT IDProduct FROM product WHERE name='" + productMap.get(product) + "'))"; 
 			} else {
 				dms = DriverManager.getConnection(rb.getString(Constants.NX_DMS_URL), rb.getString(Constants.NX_DMS_USER), NX_DMS_PW);
+		    	query = "SELECT name FROM baseline WHERE hidden='0' AND name LIKE '" + baselinePrefix + "%' AND IDEnvironment IN (SELECT IDenvironment FROM environment WHERE envtype='release' AND idproduct IN (SELECT IDProduct FROM product WHERE name='" + productMap.get(product) + "'))"; 
 			}
 	    	getBaselines = dms.createStatement();
-	    	String query = "SELECT name FROM baseline WHERE hidden='0' AND name LIKE '" + baselinePrefix + ".20%' AND IDEnvironment IN (SELECT IDenvironment FROM environment WHERE envtype='release' AND idproduct IN (SELECT IDProduct FROM product WHERE name='" + productMap.get(product) + "'))"; 
 	    	ResultSet baselines = getBaselines.executeQuery(query);
 	    	
 	        
